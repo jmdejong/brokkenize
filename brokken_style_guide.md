@@ -16,6 +16,19 @@ Please submit pull requests or open issues when you see something that is missin
 
 ## General
 
+### Compile using `-Wall`
+
+- This ensures that you see all warnings. Submitted code should never emit any warnings.
+
+### Use dromedarisCase for identifiers
+
+- so `int someValue = 10;` and `int fooBarBaz()`. 
+
+### Use CamelCase for (self-declared) types.
+
+### Use CAPITALS for symbolic enum constants.
+
+
 ### Don't write too long lines
 
 - Brokken is not very clear what is 'too long', but a rule-of-thumb might be 80 characters.
@@ -33,22 +46,25 @@ GOOD: `1 + 2`, `x += 3`
 - Create a `const` for a number if that number has some meaning. (e.g. `const alphabetSize = 26`)
 - Create an Enum if there are multiple possible numbers. The actual number values should _not_ be hard-coded, because it looks to a user of your code like a number might be substituted for any other number.
 
-### PP: Prefer Prefix
+### PP: Prefer Prefix Increment/Decrement
 
 - Use `++x` instead of `x++` whenever possible. (The same for `--x` vs `x--`).
 
 This is because this instruction is quicker to execute.
 
-### GODO: NEVER use `goto`
+### GOTO: NEVER use `goto`
 
-If you ever use `goto`, you will be hunt and killed.
+- If you ever use `goto`, you will be hunt and killed.
+
+### Macros: Don't use them
+
+- Most things that in C is done with macros can be done with templates in C++. Use those instead, whenever possible.
 
 ### PO: Premature Optimization
 
-Premature Optimization is the root of all evil:
-Do not try to think for the compiler.
-
-Try to write _readable_ code instead.
+- Premature Optimization is the root of all evil:
+  - Do not try to think for the compiler.
+  -Try to write _readable_ code instead.
 
 ## Comments
 
@@ -125,14 +141,31 @@ GOOD:
 
 ### Use the canonical for-variants whenever possible:
 
+#### Basic Incrementing for-loop:
 
+```
+    for (size_t idx = 0; idx != end; ++idx)
+    {
+        ...
+    }
+```
+
+
+#### Basic Decrementing for-loop:
+
+```
+        for (size_t idx = end; idx--; )
+    {
+        ...
+    }
+```
 
 ## Variables & Identifiers
 
 ### Use readable names
 
-- 
-  - BAD: `i` **even for for-loop iterators!**
+- SLV: Never use Single Letter Variables
+  - BAD: `i` **even for `for`-loop iterators!**
   - GOOD: `index`.
 - VI: Avoid Verbose Identifiers
   - BAD: `aLongStringWhichContainsOnlyLetters`. 
@@ -147,6 +180,23 @@ GOOD: `char **argv;`
 
 - Define variables only when you need them (not before).
 
+### Define every variable on its own line
+
+BAD:
+
+```
+int foo, bar, baz = 10;
+```
+
+GOOD:
+
+```
+int foo = 10;
+int bar = 10;
+int baz = 10;
+```
+
+This is to make it easy to remove a variable.
 
 ## Functions
 
@@ -166,6 +216,10 @@ BAD:
 GOOD:
 `void add_to_string(char* output, int number)`
 
+## Types
+
+### Use `size_t` over `unsigned int` for positive integer values.
+
 ## Classes
 
 ### ICI: Don't write in-class implementations
@@ -176,3 +230,21 @@ GOOD:
 ### IBI: Define inline members below interfaces
 
 ???
+
+## Input/Output
+
+### Use _streams_ for Input/Output
+
+- `std::cin >> yourVariable` for input. 
+  - Note that this automatically casts values to the format of `yourVariable`, which is nice.
+- `std::cout << yourVariable << "some other text"` for output.
+  - Use syntax for a single char when only adding a single char:
+    BAD: `std::cout << "\n";`
+    GOOD: `std::cout << '\n'`. 
+      - Using `"\n"` is slower, as this results in a null-terminated string being created first.
+- avoid nontrivial computations inside `std::cout`, because these reduce readability.
+
+## Strings
+
+- use `std::string` over Null-Terminated Strings whenever possible.
+
