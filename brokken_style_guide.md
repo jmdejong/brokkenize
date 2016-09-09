@@ -26,6 +26,8 @@ Please submit pull requests or open issues when you see something that is missin
 
 ### Use CamelCase for (self-declared) types.
 
+- so `struct PlaneEngine`. 
+
 ### Use CAPITALS for symbolic enum constants.
 
 
@@ -154,7 +156,7 @@ GOOD:
 #### Basic Decrementing for-loop:
 
 ```
-        for (size_t idx = end; idx--; )
+    for (size_t idx = end; idx--; )
     {
         ...
     }
