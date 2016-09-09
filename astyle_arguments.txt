@@ -1,0 +1,18 @@
+
+brokkenize astyle arguments:
+
+--style=allman / --style=bsd / --style=break / -A1
+curly brackes on new line
+
+--remove-brackets / -xj
+remove brackes arount single statement blocks
+
+--pad-header
+space after keywords
+
+--align-pointer=name / -k3
+move pointer characters to the variable name (int* i into int *i)
+
+--max-code-length=100
+break longer lines
+
