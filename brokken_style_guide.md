@@ -222,6 +222,88 @@ GOOD:
 
 ## Classes
 
+### Prefix data member names with `d_`
+
+BAD:
+
+```
+class Animal
+{
+    int width;
+    int height;
+    std::string name;
+}
+```
+
+GOOD:
+
+```
+class Animal
+{
+    int d_width;
+    int d_height;
+    std::string d_name;
+}
+```
+
+### Prefix manipulators ('setters') with `set`
+BAD:
+
+```
+class Animal
+{
+    int Location(int x, int y)
+}
+```
+
+ALSO BAD:
+
+```
+class Animal
+{
+    int goToLocation(int x, int y)
+}
+```
+
+GOOD:
+
+```
+class Animal
+{
+    int setLocation(int x, int y)
+}
+```
+
+### No prefix for accessors ('getters') (although prefixing with `get` is allowed)
+
+BAD:
+
+```
+class Animal
+{
+    std::string whatIsTheName()
+}
+```
+
+ACCEPTABLE:
+
+```
+class Animal
+{
+    std::string getName()
+}
+```
+
+GOOD:
+
+```
+class Animal
+{
+    std::string name()
+}
+```
+
+
 ### ICI: Don't write in-class implementations
 ???
 
