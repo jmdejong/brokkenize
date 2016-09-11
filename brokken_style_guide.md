@@ -26,7 +26,49 @@ Please submit pull requests or open issues when you see something that is missin
 
 ### Use CamelCase for (self-declared) types.
 
+BAD:
+
+```
+enum states {OK, FAIL}
+```
+
+```
+enum States {OK, FAIL}
+```
+
 ### Use CAPITALS for symbolic enum constants.
+
+BAD:
+
+```
+enum States {ok, fail}
+```
+
+GOOD:
+
+```
+enum States {OK, FAIL}
+```
+
+### Put `const` immediatly _after_ the thing (type, pointer) that should become constant
+_(See C++ annotations cf. 3.1)_
+
+BAD:
+```
+const int *fooBar;
+```
+
+GOOD: (makes it impossible to change contents of `baz` through this pointer; allows changing what `fooBar` points to)
+```
+int const *fooBar = baz;
+```
+
+GOOD: (makes it impossible to change what `fooBar` points to; allows changing contents of `baz`)
+```
+int *const fooBar = baz;
+```
+
+
 
 
 ### Don't write too long lines
