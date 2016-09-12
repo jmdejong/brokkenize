@@ -99,7 +99,11 @@ _(See C++ annotations cf. 3.1 for more info)_
 
 - Brokken is not very clear what is 'too long', but a rule-of-thumb might be 80 characters.
 
+Don't auto-wrap lines; these won't compile when entered as-is in a compiler. 
+Instead, split your line into shorter lines, or use `\` to continue a long string on the next line.
+
 _Tip: Make your monospace font pointsize smaller, so more source code fits on a line._
+
 
 ### BABO: Blanks around Binary Operators
 
@@ -108,6 +112,22 @@ BAD: `1+2`, `x+=3`
 GOOD: `1 + 2`, `x += 3`
 
 (With the binary operator `.`, no spaces should be used, e.g. `foo.bar`.)
+
+### No spaces in `static_cast<type>` et al.
+
+BAD:
+
+```C++
+static_cast<size_t> (x)
+static_cast <size_t>(x)
+static_cast <size_t> (x)
+```
+
+GOOD:
+
+```C++
+static_cast<size_t>(x)
+```
 
 ### NMN: No Magic Numbers
 
@@ -150,7 +170,7 @@ class A { int a; };
 
 - In-line comments should not be verbose.
 - Describe in in-line comments _why_ it happens, (not _what_ happens, as the code statement already shows this.)
-
+- When having multiple in-line comments, align them vertically, so at the right side of your functions you can see what happens in a pseudo-description.
 
 ## Keywords & Control
 
@@ -220,7 +240,42 @@ GOOD:
   break;
 ```
 
-The same goes true if the case-statement ends with `return`, `exit` or `throw`. (In those cases, align thát keyword with `case`)
+The same holds if the case-statement ends with `return`, `exit` or `throw`. (In those cases, align thát keyword with `case`)
+
+### Separate groups of lines performing distinct parts of a function's purpose with a newline.
+
+BAD:
+
+```C++
+    int main(int argc, char *argv[])
+    {
+        .....       // inspecting the arguments
+        .....
+        .....       // processing arguments
+        .....
+        .....
+        .....       // doing something with the processed arguments
+        .....
+    }
+```
+
+
+GOOD: 
+
+```C++
+    int main(int argc, char *argv[])
+    {
+        .....       // inspecting the arguments
+        .....
+
+        .....       // processing arguments
+        .....
+        .....
+
+        .....       // doing something with the processed arguments
+        .....
+    }
+```
 
 ## Loops
 
@@ -249,6 +304,120 @@ for (size_t idx = end; idx--; )
 {
     ...
 }
+```
+
+### Use the canonical stream-processing `while` whenever possible:
+
+```C++
+while (true)
+    {
+    // optionally perform tasks before reading information
+
+    // read information
+
+    if (/* the reading fails (e.g., end of file was reached) */)
+        break;
+
+    // process the obtained information.
+}
+```
+
+- When reading a whole stream or file, one of the following contractions is often possible:
+
+```C++
+
+while (getline(cin, string))
+    // process the read information.
+```
+
+```C++
+while (cin >> variable)
+    // process the read information.
+```
+
+### Avoid statement repetition around `while`-loops:
+
+BAD:
+
+```C++
+prompting();
+while (obtainData())
+{
+    processData();
+    prompting();            // statement repetition
+}
+
+```
+
+GOOD:
+
+```C++
+while (true)
+{
+    prompting();
+    if (not obtainData())
+        break;
+    processData();
+}
+```
+
+### Use failure-first or shorter-first conditional structures:
+
+BAD:
+
+```C++
+if (foo == 1)
+{
+    // ... a
+    // ... lot
+    // ... of
+    // ... code
+    // ... with
+    // ... the
+    // ... result
+}
+else
+{
+    // ... less code, or a failure where the function/loop is exited early.
+}
+```
+
+You can [see here](https://gist.github.com/Qqwy/d0a276e1ac95bbcf329460d66e6f639d) what happens to the code readability, indentation and size when this nesting is done improperly multiple levels deep.
+
+BOOD:
+
+```C++
+if (foo != 1)
+{
+    // ... less code, or a failure where the function/loop is exited early.
+}
+
+// ... a
+// ... lot
+// ... of
+// ... code
+// ... with
+// ... the
+// ... result
+
+```
+
+Notice that the failure stays together with its condition, and that there is no indentation necessary if multiple checks were to be added.
+
+### Write in an if/else ladder, the `else if` on a single line
+
+GOOD:
+
+```C++
+if (cond-1)
+    statement-1;
+else if (cond-2)
+    statement-2;
+else if (cond-3)
+    statement-3
+else
+    statement-4
+
 ```
 
 ## Variables & Identifiers
@@ -417,6 +586,16 @@ class Animal
     GOOD: `std::cout << '\n'`. 
       - Using `"\n"` is slower, as this results in a null-terminated string being created first.
 - avoid nontrivial computations inside `std::cout`, because these reduce readability.
+
+### Avoid using `std::endl`
+
+It also flushes the stream, and thefore is slow.
+Usually, this is not needed. Use `'\n'` instead.
+
+### Don't read a whole file at once:
+
+Instead, read sections (lines, words, whatever makes sense for the task at hand), then process this section, and then read the next one.
+This has far lower memory usage (i.e. constant, instead of depending on the file size).
 
 ## Strings
 
