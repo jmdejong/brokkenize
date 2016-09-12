@@ -73,7 +73,6 @@ The only exception to this rule is when you actually need to do arithmetic with 
 This itself should only happen really rarely (in practice, only when using bit flags).
 
 ### Put `const` immediatly _after_ the thing (type, pointer) that should become constant
-_(See C++ annotations cf. 3.1)_
 
 BAD:
 ```
@@ -90,12 +89,14 @@ GOOD: (makes it impossible to change what `fooBar` points to; allows changing co
 int *const fooBar = baz;
 ```
 
-
+_(See C++ annotations cf. 3.1 for more info)_
 
 
 ### Don't write too long lines
 
 - Brokken is not very clear what is 'too long', but a rule-of-thumb might be 80 characters.
+
+_Tip: Make your monospace font pointsize smaller, so more source code fits on a line._
 
 ### BABO: Blanks around Binary Operators
 
@@ -114,7 +115,7 @@ GOOD: `1 + 2`, `x += 3`
 
 - Use `++x` instead of `x++` whenever possible. (The same for `--x` vs `x--`).
 
-This is because this instruction is quicker to execute.
+This is because this instruction is significantly quicker to execute, because no extra intermediate assignment is necessary.
 
 ### GOTO: NEVER use `goto`
 
@@ -123,6 +124,18 @@ This is because this instruction is quicker to execute.
 ### Macros: Don't use them
 
 - Most things that in C is done with macros can be done with templates in C++. Use those instead, whenever possible.
+- Don't use `#define`, etc.
+
+One exception is `#include <header_file>`, which is of high importance to writing segmented programs. 
+
+The second exception are _include guards_, which make sure that an `#include` statement is only executed once, even if your file is (indirectly) included multiple times in another file. Example:
+
+```
+#ifndef YOUR_FILE_NAME
+#define YOUR_FILE_NAME
+class A { int a; };
+#endif
+```  
 
 ### PO: Premature Optimization
 
@@ -383,6 +396,7 @@ class Animal
 
 - `std::cin >> yourVariable` for input. 
   - Note that this automatically casts values to the format of `yourVariable`, which is nice.
+  - also note that this strips any whitespace (spaces, tabs, newlines) from the front of `std::cin` before putting something into `yourVariable`.
 - `std::cout << yourVariable << "some other text"` for output.
   - Use syntax for a single char when only adding a single char:
     BAD: `std::cout << "\n";`
@@ -392,5 +406,18 @@ class Animal
 
 ## Strings
 
-- use `std::string` over Null-Terminated Strings whenever possible.
+### use `std::string` over Null-Terminated Byte Strings (NTB strings, NTBS) whenever possible.
+
+The reason is that `std::string` can handle strings that contain null-characters, while NTB strings cannot.
+
+The same is true for functions. For instance, use `cppString.length()` over `strlen(cString)`.
+
+### Use `int` over `char` whenever possible.
+  
+This is because `char` is an unsigned data type that will overflow on e.g. EOF.
+Only use `char` (or `char *`) when working with true C Null-Terminated Byte Strings (NTBS), such as `argv` that is passed to `main(int argc, char* argv[])`.
+
+### Use the index `[]` operator for strings when you know you will not go out of bounds.
+
+In other words, only use `someString.at(int index)` when you expect that going out of bounds is highly possible.
 
