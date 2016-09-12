@@ -67,6 +67,9 @@ enum class States {OK, FAIL}
 int foo = States::OK; //note that the word OK now is nested in a namespace.
 ```
 
+The only exception to this rule is when you actually need to do arithmetic with the integer values of your enums.
+This itself should only happen really rarely (in practice, only when using bit flags).
+
 ### Put `const` immediatly _after_ the thing (type, pointer) that should become constant
 _(See C++ annotations cf. 3.1)_
 
