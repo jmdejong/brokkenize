@@ -28,13 +28,13 @@ Please submit pull requests or open issues when you see something that is missin
 
 BAD:
 
-```
+```C++
 enum class states {OK, FAIL}
 ```
 
 GOOD:
 
-```
+```C++
 enum class States {OK, FAIL}
 ```
 
@@ -43,13 +43,13 @@ enum class States {OK, FAIL}
 
 BAD:
 
-```
+```C++
 enum States {ok, fail}
 ```
 
 GOOD:
 
-```
+```C++
 enum States {OK, FAIL}
 ```
 
@@ -57,14 +57,14 @@ enum States {OK, FAIL}
 
 BAD:
 
-```
+```C++
 enum States {OK, FAIL}
 int foo = OK; //note that the word OK now always (implicitly!) refers to the States value.
 ```
 
 GOOD: 
 
-```
+```C++
 enum class States {OK, FAIL}
 int foo = States::OK; //note that the word OK now is nested in a namespace.
 ```
@@ -75,17 +75,20 @@ This itself should only happen really rarely (in practice, only when using bit f
 ### Put `const` immediatly _after_ the thing (type, pointer) that should become constant
 
 BAD:
-```
+
+```C++
 const int *fooBar;
 ```
 
 GOOD: (makes it impossible to change contents of `baz` through this pointer; allows changing what `fooBar` points to)
-```
+
+```C++
 int const *fooBar = baz;
 ```
 
 GOOD: (makes it impossible to change what `fooBar` points to; allows changing contents of `baz`)
-```
+
+```C++
 int *const fooBar = baz;
 ```
 
@@ -130,7 +133,7 @@ One exception is `#include <header_file>`, which is of high importance to writin
 
 The second exception are _include guards_, which make sure that an `#include` statement is only executed once, even if your file is (indirectly) included multiple times in another file. Example:
 
-```
+```C++
 #ifndef YOUR_FILE_NAME
 #define YOUR_FILE_NAME
 class A { int a; };
@@ -154,7 +157,7 @@ class A { int a; };
 ### Add a space between keywords and following condition
 BAD:
 
-```
+```C++
 if(x == 10)
 {
   //...
@@ -163,7 +166,7 @@ if(x == 10)
 
 GOOD:
 
-```
+```C++
 if (z == 10)
 {
   // ...
@@ -173,7 +176,7 @@ if (z == 10)
 ### No {} around single statement bodies of `if`, `else`, `for`, `while`, etc.
 BAD:
 
-```
+```C++
 if(x)
 {
   return ++x;
@@ -186,7 +189,7 @@ else
 
 GOOD:
 
-```
+```C++
 if(x)
   return ++x;
 else
@@ -196,17 +199,28 @@ else
 
 ### Align Break and Case
 BAD:
-```
+
+```C++
   case statement:
     // ...
     break;
+  case anotherstatement:
+    // ...
+    break;
 ```
+
 GOOD:
-```
+
+```C++
   case statement:
     // ...
   break;
+  case anotherstatement:
+    // ...
+  break;
 ```
+
+The same goes true if the case-statement ends with `return`, `exit` or `throw`. (In those cases, align thát keyword with `case`)
 
 ## Loops
 
@@ -220,17 +234,17 @@ GOOD:
 
 #### Basic Incrementing for-loop:
 
-```
-    for (size_t idx = 0; idx != end; ++idx)
-    {
-        ...
-    }
+```C++
+for (size_t idx = 0; idx != end; ++idx)
+{
+    ...
+}
 ```
 
 
 #### Basic Decrementing for-loop:
 
-```
+```C++
     for (size_t idx = end; idx--; )
     {
         ...
@@ -261,13 +275,13 @@ GOOD: `char **argv;`
 
 BAD:
 
-```
+```C++
 int foo, bar, baz = 10;
 ```
 
 GOOD:
 
-```
+```C++
 int foo = 10;
 int bar = 10;
 int baz = 10;
@@ -303,7 +317,7 @@ GOOD:
 
 BAD:
 
-```
+```C++
 class Animal
 {
     int width;
@@ -314,7 +328,7 @@ class Animal
 
 GOOD:
 
-```
+```C++
 class Animal
 {
     int d_width;
@@ -326,7 +340,7 @@ class Animal
 ### Prefix manipulators ('setters') with `set`
 BAD:
 
-```
+```C++
 class Animal
 {
     int Location(int x, int y)
@@ -335,7 +349,7 @@ class Animal
 
 ALSO BAD:
 
-```
+```C++
 class Animal
 {
     int goToLocation(int x, int y)
@@ -344,7 +358,7 @@ class Animal
 
 GOOD:
 
-```
+```C++
 class Animal
 {
     int setLocation(int x, int y)
@@ -355,7 +369,7 @@ class Animal
 
 BAD:
 
-```
+```C++
 class Animal
 {
     std::string whatIsTheName()
@@ -364,7 +378,7 @@ class Animal
 
 ACCEPTABLE:
 
-```
+```C++
 class Animal
 {
     std::string getName()
@@ -373,7 +387,7 @@ class Animal
 
 GOOD:
 
-```
+```C++
 class Animal
 {
     std::string name()
