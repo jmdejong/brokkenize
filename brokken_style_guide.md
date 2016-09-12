@@ -245,10 +245,10 @@ for (size_t idx = 0; idx != end; ++idx)
 #### Basic Decrementing for-loop:
 
 ```C++
-    for (size_t idx = end; idx--; )
-    {
-        ...
-    }
+for (size_t idx = end; idx--; )
+{
+    ...
+}
 ```
 
 ## Variables & Identifiers
