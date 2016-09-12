@@ -32,6 +32,8 @@ BAD:
 enum class states {OK, FAIL}
 ```
 
+GOOD:
+
 ```
 enum class States {OK, FAIL}
 ```
