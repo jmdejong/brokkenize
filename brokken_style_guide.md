@@ -216,7 +216,7 @@ GOOD:
 #### Basic Decrementing for-loop:
 
 ```
-        for (size_t idx = end; idx--; )
+    for (size_t idx = end; idx--; )
     {
         ...
     }
