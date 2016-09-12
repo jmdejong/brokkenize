@@ -29,12 +29,13 @@ Please submit pull requests or open issues when you see something that is missin
 BAD:
 
 ```
-enum states {OK, FAIL}
+enum class states {OK, FAIL}
 ```
 
 ```
-enum States {OK, FAIL}
+enum class States {OK, FAIL}
 ```
+
 
 ### Use CAPITALS for symbolic enum constants.
 
@@ -48,6 +49,22 @@ GOOD:
 
 ```
 enum States {OK, FAIL}
+```
+
+### Use enum class-types over integer-mapped constants whenever possible.
+
+BAD:
+
+```
+enum States {OK, FAIL}
+int foo = OK; //note that the word OK now always (implicitly!) refers to the States value.
+```
+
+GOOD: 
+
+```
+enum class States {OK, FAIL}
+int foo = States::OK; //note that the word OK now is nested in a namespace.
 ```
 
 ### Put `const` immediatly _after_ the thing (type, pointer) that should become constant
