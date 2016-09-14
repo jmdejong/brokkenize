@@ -44,13 +44,13 @@ enum class States {OK, FAIL}
 BAD:
 
 ```C++
-enum States {ok, fail}
+enum class States {ok, fail}
 ```
 
 GOOD:
 
 ```C++
-enum States {OK, FAIL}
+enum class States {OK, FAIL}
 ```
 
 ### Use enum class-types over integer-mapped constants whenever possible.
@@ -132,7 +132,19 @@ static_cast<size_t>(x)
 ### NMN: No Magic Numbers
 
 - Create a `const` for a number if that number has some meaning. (e.g. `const alphabetSize = 26`)
-- Create an Enum if there are multiple possible numbers. The actual number values should _not_ be hard-coded, because it looks to a user of your code like a number might be substituted for any other number.
+- Create an Enum if there are multiple possible numbers. The actual number values should _not_ be hard-coded, because it looks to a user of your code like a number might be substituted for any other number:
+  - BAD: 
+  ```C++
+  processString(string, 0);
+  processString(string, 1);
+
+  processString(string, 80);  // Huh?
+  ```
+  - GOOD:
+  ```C++
+  processString(string, StringProcessing::NORMAL);
+  processString(string, StringProcessing::CASE_INSENSITIVE);
+  ```
 
 ### PP: Prefer Prefix Increment/Decrement
 
